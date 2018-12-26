@@ -8,23 +8,30 @@
 
 #include <iostream>
 #include <fstream>
+#include <algorithm>
 #include <vector>
 #include <map>
-#include <string>
 #include <time.h>
 #include <tuple>
+#include <sstream>
+#include <locale>
+#include <iomanip>
+#include <chrono>
 using namespace std;
+using namespace std::chrono;
 
 void read_input(string filename, vector<string> &inpts);
 bool compare_line_dates(string &line_a, string &line_b);
 void add_guards(vector<string> &inpts, map<int, tuple<int, vector<int>>> &guard_minutes);
 void update_guard_sleep(tuple<int, vector<int>> &tp, int fell_asleep_min, int woke_up_min);
-
 int find_worst_guard(map<int, tuple<int, vector<int>>> &guard_minutes);
 int find_worst_minute(int guard_id, map<int, tuple<int, vector<int>>> &guard_minutes);
 
+static int runs = 0;
+
 int main()
 {
+    high_resolution_clock::time_point t1 = high_resolution_clock::now();
     vector<string> inpts(1002);
 
     // Map key is guard ID
@@ -43,8 +50,12 @@ int main()
 
     cout << "Worst Guard ID: " << worst_guard_id << endl;
     cout << "Worst Minute for that Guard: " << worst_minute << endl;
-
+    cout << "Number of iterations: " << runs << endl;
     // Populate
+
+    high_resolution_clock::time_point t2 = high_resolution_clock::now();
+    auto duration = duration_cast<milliseconds>(t2 - t1).count();
+    cout << "Execution time: " << duration << " ms" << endl;
     return 0;
 }
 
@@ -60,26 +71,13 @@ void add_guards(vector<string> &inpts, map<int, tuple<int, vector<int>>> &guard_
     bool is_sleeping = false;
     for (int i = 0; i < inpts.size(); i++)
     {
-
         string line = inpts[i];
         char line_type = line.at(19);
 
         // New guard
         if (line_type == 'G')
         {
-
-            // If the previous guard did not wake up, then he slept through the whole night
-            if (is_sleeping)
-            {
-                tuple<int, vector<int>> &gm = guard_minutes.find(current_guard_id)->second;
-
-                woke_up_min = 60;
-                update_guard_sleep(gm, fell_asleep_min, woke_up_min);
-            }
-
             // Continue to create the new guard
-            fell_asleep_min = 0;
-            woke_up_min = 0;
             current_guard_id = stoi(line.substr(hash_idx + 1, 4));
             it = guard_minutes.find(current_guard_id);
 
@@ -89,9 +87,8 @@ void add_guards(vector<string> &inpts, map<int, tuple<int, vector<int>>> &guard_
                 vector<int> minutes(60, 0);
                 guard_minutes[current_guard_id] = make_tuple(0, minutes);
             }
-
-            // Fall asleep
         }
+        // Fall asleep
         else if (line_type == 'f')
         {
             fell_asleep_min = stoi(line.substr(minute_idx, 2));
@@ -108,6 +105,8 @@ void add_guards(vector<string> &inpts, map<int, tuple<int, vector<int>>> &guard_
 
             is_sleeping = false;
         }
+
+        ++runs;
     }
 }
 
@@ -131,8 +130,8 @@ int find_worst_guard(map<int, tuple<int, vector<int>>> &guard_minutes)
             max_total_minutes = total_minutes;
             worst_id = it->first;
         }
-
         it++;
+        ++runs;
     }
 
     return worst_id;
@@ -153,6 +152,7 @@ int find_worst_minute(int guard_id, map<int, tuple<int, vector<int>>> &guard_min
             worst_minute = i;
             max_minutes_slept = minutes[i];
         }
+        ++runs;
     }
 
     return worst_minute;
@@ -169,6 +169,7 @@ void update_guard_sleep(tuple<int, vector<int>> &tp, int fell_asleep_min, int wo
     for (i = fell_asleep_min; i < woke_up_min; i++)
     {
         minutes[i] += 1;
+        ++runs;
     }
 }
 
@@ -184,6 +185,7 @@ void read_input(string filename, vector<string> &inpts)
             //inpts.push_back(line);
             inpts[i] = line;
             i++;
+            ++runs;
         }
     }
 }
@@ -197,6 +199,8 @@ bool compare_line_dates(string &line_a, string &line_b)
     char buffer_b[16];
     strncpy(buffer_a, str_time_a.c_str(), 16);
     strncpy(buffer_b, str_time_b.c_str(), 16);
+
+    ++runs;
 
     struct tm tm_a;
     struct tm tm_b;
