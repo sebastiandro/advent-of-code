@@ -1,22 +1,7 @@
-//
-//  main.cpp
-//  AdventOfCode
-//
-//  Created by Sebastian Nilsson on 2018-12-25.
-//  Copyright © 2018 Sebastian Nilsson. All rights reserved.
-//
+// Advent of Code 2018
+// -- Day 4 --
 
-#include <iostream>
-#include <fstream>
-#include <algorithm>
-#include <vector>
-#include <map>
-#include <time.h>
-#include <tuple>
-#include <sstream>
-#include <locale>
-#include <iomanip>
-#include <chrono>
+#include "../aoc.hpp"
 using namespace std;
 using namespace std::chrono;
 

@@ -1,0 +1,26 @@
+{
+    "files.associations": {
+        "new": "cpp",
+        "string": "cpp",
+        "iosfwd": "cpp",
+        "iterator": "cpp",
+        "__config": "cpp",
+        "__nullptr": "cpp",
+        "cstddef": "cpp",
+        "exception": "cpp",
+        "initializer_list": "cpp",
+        "stdexcept": "cpp",
+        "type_traits": "cpp",
+        "typeinfo": "cpp",
+        "algorithm": "cpp",
+        "vector": "cpp",
+        "iostream": "cpp",
+        "tuple": "cpp",
+        "chrono": "cpp",
+        "ostream": "cpp",
+        "map": "cpp",
+        "utility": "cpp",
+        "memory": "cpp"
+    },
+    "python.pythonPath": "/usr/local/bin/python3"
+}
