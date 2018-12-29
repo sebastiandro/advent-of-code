@@ -20,7 +20,8 @@
         "ostream": "cpp",
         "map": "cpp",
         "utility": "cpp",
-        "memory": "cpp"
+        "memory": "cpp",
+        "list": "cpp"
     },
     "python.pythonPath": "/usr/local/bin/python3"
 }
