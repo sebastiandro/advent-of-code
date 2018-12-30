@@ -21,7 +21,9 @@
         "map": "cpp",
         "utility": "cpp",
         "memory": "cpp",
-        "list": "cpp"
+        "list": "cpp",
+        "__bit_reference": "cpp",
+        "deque": "cpp"
     },
     "python.pythonPath": "/usr/local/bin/python3"
 }
